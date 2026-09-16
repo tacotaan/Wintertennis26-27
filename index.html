@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="glean-artifact-type" content="tracker_tables">
+<title>Wintertennis 2026/27 — Speelschema</title>
+<style>
+:root{
+  --artifact-background: var(--theme-background, #f7f8fa);
+  --artifact-surface: var(--theme-background-light, #ffffff);
+  --artifact-surface-2: #eef2f7;
+  --artifact-text: var(--theme-text-primary, #16202e);
+  --artifact-muted: #3f4c5c;
+  --artifact-border: #dbe3ec;
+  --artifact-accent: #16a34a;
+  --artifact-accent-2: #0e7490;
+  --artifact-accent-soft: #e3f5e9;
+  --artifact-play: #e2f0d9;
+  --artifact-play-text: #216e2c;
+  --artifact-absent: #f7d4d4;
+  --artifact-absent-text: #9c1c1c;
+  --artifact-rest: #f0f3f7;
+  --artifact-rest-text: #55647a;
+  --artifact-none: #fff3d1;
+  --artifact-none-text: #8a6d10;
+  --artifact-shadow: 0 1px 3px rgba(20,32,46,.08), 0 6px 24px rgba(20,32,46,.06);
+}
+html[data-theme='dark']{
+  --artifact-background:#0f141b;--artifact-surface:#171e27;--artifact-surface-2:#1e2733;
+  --artifact-text:#e8edf3;--artifact-muted:#9fb0c2;--artifact-border:#2a3644;
+  --artifact-accent:#34d399;--artifact-accent-2:#22b8cf;--artifact-accent-soft:#123329;
+  --artifact-play:#1c3b22;--artifact-play-text:#8fe6a0;
+  --artifact-absent:#4a1f1f;--artifact-absent-text:#f4a3a3;
+  --artifact-rest:#232d39;--artifact-rest-text:#9fb0c2;
+  --artifact-none:#3a3212;--artifact-none-text:#f0d783;
+  --artifact-shadow:0 1px 3px rgba(0,0,0,.4),0 6px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--artifact-background);color:var(--artifact-text);line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+header.hero{background:linear-gradient(135deg,var(--artifact-accent),var(--artifact-accent-2));border-radius:18px;padding:30px 28px;color:#fff;box-shadow:var(--artifact-shadow)}
+header.hero h1{margin:0;font-size:1.9rem;font-weight:800;letter-spacing:-.02em}
+header.hero p{margin:8px 0 0;font-size:1rem;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:8px 12px;font-size:.85rem;font-weight:600}
+@media(max-width:620px){header.hero h1{font-size:1.5rem}}
+.section-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--artifact-muted);margin:30px 0 12px}
+.next{margin-top:20px;border-radius:18px;padding:22px 24px;color:#fff;box-shadow:var(--artifact-shadow);position:relative;overflow:hidden;background:linear-gradient(135deg,var(--artifact-accent),var(--artifact-accent-2))}
+.next.done{background:linear-gradient(135deg,#3f4c5c,#26313f)}
+.next .eyebrow{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.9;display:flex;align-items:center;gap:8px}
+.next .live{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.next .when{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin:8px 0 2px;text-transform:capitalize}
+.next .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.next .mpill{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.32);border-radius:10px;padding:7px 13px;font-size:.9rem;font-weight:700}
+.next .who-label{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.9;margin:18px 0 8px}
+.next .who{display:flex;flex-wrap:wrap;gap:10px}
+.next .pl{background:#fff;color:#16202e;border-radius:12px;padding:10px 16px;font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.next .pl .num{width:22px;height:22px;border-radius:50%;background:var(--artifact-accent);color:#fff;font-size:.78rem;display:flex;align-items:center;justify-content:center;font-weight:800}
+.next .rest-note{margin-top:14px;font-size:.82rem;opacity:.9}
+.next .countdown{position:absolute;top:22px;right:24px;text-align:right}
+.next .countdown .n{font-size:1.8rem;font-weight:800;line-height:1}
+.next .countdown .u{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;opacity:.9}
+@media(max-width:560px){.next .countdown{position:static;text-align:left;margin-top:10px}.next .when{font-size:1.25rem}}
+.filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{cursor:pointer;border:1px solid var(--artifact-border);background:var(--artifact-surface);color:var(--artifact-text);border-radius:22px;padding:8px 15px;font-size:.9rem;font-weight:600;transition:.15s;user-select:none}
+.chip:hover{border-color:var(--artifact-accent)}
+.chip.active{background:var(--artifact-accent);border-color:var(--artifact-accent);color:#fff}
+.chip.all.active{background:var(--artifact-text);border-color:var(--artifact-text)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 4px;font-size:.83rem;color:var(--artifact-muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+.card{background:var(--artifact-surface);border:1px solid var(--artifact-border);border-radius:16px;box-shadow:var(--artifact-shadow);overflow:hidden;margin-top:12px}
+.table-scroll{max-height:70vh;overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{padding:6px 8px;text-align:center;font-size:.88rem;border-bottom:1px solid var(--artifact-border)}
+thead th{position:-webkit-sticky;position:sticky;top:0;background:var(--artifact-surface-2);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;color:var(--artifact-muted);font-weight:700;z-index:2}
+th.datecol,td.datecol{text-align:left;white-space:nowrap;font-weight:600;font-size:.8rem;padding:6px 10px;line-height:1.25;position:-webkit-sticky;position:sticky;left:0;background:var(--artifact-surface);z-index:1}
+thead th.datecol{z-index:3;background:var(--artifact-surface-2)}
+td.datecol .wk{color:var(--artifact-accent)}
+.wk{display:block;font-size:.68rem;font-weight:700;margin-bottom:1px}
+.court-pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:14px;background:var(--artifact-accent-soft);color:var(--artifact-accent)}
+td.cell{font-weight:700;font-size:.82rem}
+.cell.play{background:var(--artifact-play);color:var(--artifact-play-text)}
+.cell.absent{background:var(--artifact-absent);color:var(--artifact-absent-text)}
+.cell.rest{background:var(--artifact-rest);color:var(--artifact-rest-text)}
+.cell.none{background:var(--artifact-none);color:var(--artifact-none-text)}
+tr.highlight-play{outline:2px solid var(--artifact-accent);outline-offset:-2px}
+tbody tr:hover td{filter:brightness(.98)}
+tfoot td{font-weight:800;background:var(--artifact-surface-2);border-top:2px solid var(--artifact-accent)}
+.summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
+.pcard{background:var(--artifact-surface);border:1px solid var(--artifact-border);border-radius:14px;padding:15px 16px;box-shadow:var(--artifact-shadow);cursor:pointer;transition:.15s}
+.pcard:hover{border-color:var(--artifact-accent)}
+.pcard h4{margin:0 0 8px;font-size:1rem;display:flex;justify-content:space-between;align-items:center}
+.pcard .big{font-size:1.4rem;font-weight:800;color:var(--artifact-accent)}
+.pcard .split{display:flex;gap:14px;margin-top:6px;font-size:.82rem;color:var(--artifact-muted)}
+.pcard .split b{color:var(--artifact-text)}
+.ics-btn{margin-top:12px;width:100%;cursor:pointer;border:1px solid var(--artifact-accent);background:var(--artifact-accent-soft);color:var(--artifact-accent);border-radius:10px;padding:8px 12px;font-size:.82rem;font-weight:700;transition:.15s}
+.ics-btn:hover{background:var(--artifact-accent);color:#fff}
+.infobox{margin-top:14px;background:var(--artifact-accent-soft);border:1px solid var(--artifact-border);border-radius:14px;padding:16px 18px;font-size:.9rem;color:var(--artifact-text)}
+.infobox b{color:var(--artifact-accent)}
+.vlist{margin:8px 0 0;padding-left:18px;font-size:.9rem;color:var(--artifact-text)}
+.vlist li{margin:3px 0}
+.foot-note{margin-top:24px;font-size:.82rem;color:var(--artifact-muted);text-align:center;line-height:1.5}
+
+@media print{@page{size:auto !important}body{margin:0;padding:.4in .6in;background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}.wrap{max-width:100% !important}[style*="position:sticky"],thead th{position:static !important}section,.card{break-inside:avoid}[class*="max-height"],.table-scroll{max-height:none !important;overflow:visible !important}button,.ics-btn{display:none !important}*,*::before,*::after{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero" data-glean-id="hero">
+<h1>🎾 Wintertennis 2026/27</h1>
+<p>Speelschema — dinsdag 29 september 2026 t/m dinsdag 23 maart 2027. Iedereen speelt ongeveer even vaak, met steeds een wisselende samenstelling.</p>
+<div class="badges"><span class="badge">7 vaste spelers</span><span class="badge">Ralph 4× (gast)</span><span class="badge">26 speelavonden</span><span class="badge">Dinsdag · 18:30–20:00</span><span class="badge">4 spelers per avond</span><span class="badge">Eerlijk verdeeld & wisselend</span></div>
+</header>
+
+<div class="section-title">Aankomende ronde</div>
+<div class="next" id="next" data-glean-id="next-round"><div class="eyebrow"><span class="live"></span>Aankomende ronde</div><div class="when">dinsdag 29 september 2026</div><div class="meta"><span class="mpill">Dinsdag</span><span class="mpill">18:30–20:00</span><span class="mpill">Week 40</span></div><div class="who-label">Wie speelt er</div><div class="who"><span class="pl"><span class="num">1</span>Stefan</span><span class="pl"><span class="num">2</span>Niels</span><span class="pl"><span class="num">3</span>Denny</span><span class="pl"><span class="num">4</span>Christan</span></div><div class="rest-note">Rust deze week: Stef, Bob · Verhinderd: Dennis</div></div>
+
+<div class="section-title">Filter op speler</div>
+<div class="filter" id="filter" data-glean-id="filter"></div>
+<div class="legend">
+<span><span class="dot" style="background:var(--artifact-play)"></span>Speelt</span>
+<span><span class="dot" style="background:var(--artifact-rest)"></span>Rust</span>
+<span><span class="dot" style="background:var(--artifact-absent)"></span>Verhinderd (vooraf bekend)</span>
+<span><span class="dot" style="background:var(--artifact-none)"></span>Gast (n.v.t.)</span>
+</div>
+<div class="card" data-glean-id="schedule-table"><div class="table-scroll"><table><thead><tr id="head"><th class="datecol">Datum</th><th>Dag &amp; tijd</th><th>Stefan</th><th>Dennis</th><th>Niels</th><th>Denny</th><th>Christan</th><th>Stef</th><th>Bob</th><th>Ralph</th></tr></thead><tbody id="body"><tr data-glean-id="row-2026-09-29"><td class="datecol"><span class="wk">Week 40</span>29 sep 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell absent">✕✕</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-10-06"><td class="datecol"><span class="wk">Week 41</span>6 okt 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-10-13"><td class="datecol"><span class="wk">Week 42</span>13 okt 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-10-20"><td class="datecol"><span class="wk">Week 43</span>20 okt 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell absent">✕✕</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell absent">✕✕</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-10-27"><td class="datecol"><span class="wk">Week 44</span>27 okt 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell absent">✕✕</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-11-03"><td class="datecol"><span class="wk">Week 45</span>3 nov 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-11-10"><td class="datecol"><span class="wk">Week 46</span>10 nov 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-11-17"><td class="datecol"><span class="wk">Week 47</span>17 nov 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-11-24"><td class="datecol"><span class="wk">Week 48</span>24 nov 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-12-01"><td class="datecol"><span class="wk">Week 49</span>1 dec 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-12-08"><td class="datecol"><span class="wk">Week 50</span>8 dec 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-12-15"><td class="datecol"><span class="wk">Week 51</span>15 dec 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-12-22"><td class="datecol"><span class="wk">Week 52</span>22 dec 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2026-12-29"><td class="datecol"><span class="wk">Week 53</span>29 dec 2026</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-01-05"><td class="datecol"><span class="wk">Week 1</span>5 jan 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-01-12"><td class="datecol"><span class="wk">Week 2</span>12 jan 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell absent">✕✕</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-01-19"><td class="datecol"><span class="wk">Week 3</span>19 jan 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td></tr><tr data-glean-id="row-2027-01-26"><td class="datecol"><span class="wk">Week 4</span>26 jan 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-02-02"><td class="datecol"><span class="wk">Week 5</span>2 feb 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell absent">✕✕</td><td class="cell absent">✕✕</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-02-09"><td class="datecol"><span class="wk">Week 6</span>9 feb 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td></tr><tr data-glean-id="row-2027-02-16"><td class="datecol"><span class="wk">Week 7</span>16 feb 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-02-23"><td class="datecol"><span class="wk">Week 8</span>23 feb 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell absent">✕✕</td><td class="cell absent">✕✕</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-03-02"><td class="datecol"><span class="wk">Week 9</span>2 mrt 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td></tr><tr data-glean-id="row-2027-03-09"><td class="datecol"><span class="wk">Week 10</span>9 mrt 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-03-16"><td class="datecol"><span class="wk">Week 11</span>16 mrt 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell none">–</td></tr><tr data-glean-id="row-2027-03-23"><td class="datecol"><span class="wk">Week 12</span>23 mrt 2027</td><td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">18:30–20:00</span></td><td class="cell rest">·</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td><td class="cell play">✓</td><td class="cell rest">·</td><td class="cell play">✓</td></tr></tbody><tfoot><tr id="foot"><td class="datecol">Totaal gespeeld</td><td>—</td><td>14×</td><td>14×</td><td>15×</td><td>14×</td><td>14×</td><td>15×</td><td>14×</td><td>4×</td></tr></tfoot></table></div></div>
+
+<div class="section-title">Balans per speler</div>
+<div class="infobox">📅 Klik op een speler of op "Zet in agenda" om jouw speeldagen als .ics te downloaden en te importeren in Google Agenda, Apple Agenda of Outlook (met dag, tijd en teamgenoten).</div>
+<div class="summary" id="summary" data-glean-id="summary"><div class="pcard" data-glean-id="pcard-Stefan"><h4>Stefan <span class="big">14×</span></h4><div class="split"><span>Rust: <b>10</b></span><span>Verhinderd: <b>2</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Stefan')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Dennis"><h4>Dennis <span class="big">14×</span></h4><div class="split"><span>Rust: <b>7</b></span><span>Verhinderd: <b>5</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Dennis')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Niels"><h4>Niels <span class="big">15×</span></h4><div class="split"><span>Rust: <b>10</b></span><span>Verhinderd: <b>1</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Niels')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Denny"><h4>Denny <span class="big">14×</span></h4><div class="split"><span>Rust: <b>12</b></span><span>Verhinderd: <b>0</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Denny')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Christan"><h4>Christan <span class="big">14×</span></h4><div class="split"><span>Rust: <b>12</b></span><span>Verhinderd: <b>0</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Christan')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Stef"><h4>Stef <span class="big">15×</span></h4><div class="split"><span>Rust: <b>11</b></span><span>Verhinderd: <b>0</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Stef')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Bob"><h4>Bob <span class="big">14×</span></h4><div class="split"><span>Rust: <b>11</b></span><span>Verhinderd: <b>1</b></span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Bob')">📅 Zet in agenda</button></div><div class="pcard" data-glean-id="pcard-Ralph" style="border-style:dashed"><h4>Ralph <span class="big">4×</span></h4><div class="split"><span>Gastspeler</span><span>vanaf januari</span></div><button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS('Ralph')">📅 Zet in agenda</button></div></div>
+
+<div class="section-title">Vooraf bekende verhinderingen</div>
+<div class="card" style="padding:16px 20px" data-glean-id="absences"><ul class="vlist"><li><b>Dennis:</b> 29 sep, 27 okt, 12 jan, 2 feb, 23 feb</li><li><b>Niels:</b> 20 okt</li><li><b>Bob:</b> 20 okt</li><li><b>Stefan:</b> 2 feb, 23 feb</li><li><b>Ralph:</b> gastspeler, speelt 4× vanaf januari (19 jan, 9 feb, 2 mrt, 23 mrt)</li></ul></div>
+
+<div class="infobox" data-glean-id="share-box"><b>Delen &amp; online zetten:</b> dit is één zelfstandig HTML-bestand. Je kunt het rechtstreeks openen in elke browser (ook op telefoon), of makkelijk delen door het te uploaden naar Google Drive (Delen → link), als bijlage te mailen, of gratis te hosten via bijvoorbeeld GitHub Pages of Netlify Drop. Via de knop rechtsboven kun je het ook als PDF exporteren.</div>
+
+<div class="foot-note">Dinsdag 18:30–20:00 · 4 spelers per avond, de rest rust en rouleert. Het rooster verdeelt de speelbeurten zo eerlijk mogelijk en varieert steeds de samenstelling.</div>
+</div>
+
+<script>
+var DATA={"cols": ["Stefan", "Dennis", "Niels", "Denny", "Christan", "Stef", "Bob", "Ralph"], "base": ["Stefan", "Dennis", "Niels", "Denny", "Christan", "Stef", "Bob"], "guest": "Ralph", "perNight": 4, "day": "dinsdag", "time": "18:30–20:00", "seasonStart": "2026-09-29", "seasonEnd": "2027-03-23", "rows": [{"iso": "2026-09-29", "label": "29 sep 2026", "short": "29 sep", "full": "dinsdag 29 september 2026", "week": 40, "lineup": ["Stefan", "Niels", "Denny", "Christan"], "rest": ["Stef", "Bob"], "absent": ["Dennis"]}, {"iso": "2026-10-06", "label": "6 okt 2026", "short": "6 okt", "full": "dinsdag 6 oktober 2026", "week": 41, "lineup": ["Stefan", "Dennis", "Stef", "Bob"], "rest": ["Niels", "Denny", "Christan"], "absent": []}, {"iso": "2026-10-13", "label": "13 okt 2026", "short": "13 okt", "full": "dinsdag 13 oktober 2026", "week": 42, "lineup": ["Dennis", "Niels", "Denny", "Stef"], "rest": ["Stefan", "Christan", "Bob"], "absent": []}, {"iso": "2026-10-20", "label": "20 okt 2026", "short": "20 okt", "full": "dinsdag 20 oktober 2026", "week": 43, "lineup": ["Stefan", "Dennis", "Denny", "Christan"], "rest": ["Stef"], "absent": ["Niels", "Bob"]}, {"iso": "2026-10-27", "label": "27 okt 2026", "short": "27 okt", "full": "dinsdag 27 oktober 2026", "week": 44, "lineup": ["Niels", "Christan", "Stef", "Bob"], "rest": ["Stefan", "Denny"], "absent": ["Dennis"]}, {"iso": "2026-11-03", "label": "3 nov 2026", "short": "3 nov", "full": "dinsdag 3 november 2026", "week": 45, "lineup": ["Stefan", "Dennis", "Niels", "Bob"], "rest": ["Denny", "Christan", "Stef"], "absent": []}, {"iso": "2026-11-10", "label": "10 nov 2026", "short": "10 nov", "full": "dinsdag 10 november 2026", "week": 46, "lineup": ["Denny", "Christan", "Stef", "Bob"], "rest": ["Stefan", "Dennis", "Niels"], "absent": []}, {"iso": "2026-11-17", "label": "17 nov 2026", "short": "17 nov", "full": "dinsdag 17 november 2026", "week": 47, "lineup": ["Stefan", "Dennis", "Christan", "Stef"], "rest": ["Niels", "Denny", "Bob"], "absent": []}, {"iso": "2026-11-24", "label": "24 nov 2026", "short": "24 nov", "full": "dinsdag 24 november 2026", "week": 48, "lineup": ["Stefan", "Niels", "Denny", "Bob"], "rest": ["Dennis", "Christan", "Stef"], "absent": []}, {"iso": "2026-12-01", "label": "1 dec 2026", "short": "1 dec", "full": "dinsdag 1 december 2026", "week": 49, "lineup": ["Dennis", "Niels", "Christan", "Bob"], "rest": ["Stefan", "Denny", "Stef"], "absent": []}, {"iso": "2026-12-08", "label": "8 dec 2026", "short": "8 dec", "full": "dinsdag 8 december 2026", "week": 50, "lineup": ["Stefan", "Niels", "Denny", "Stef"], "rest": ["Dennis", "Christan", "Bob"], "absent": []}, {"iso": "2026-12-15", "label": "15 dec 2026", "short": "15 dec", "full": "dinsdag 15 december 2026", "week": 51, "lineup": ["Dennis", "Denny", "Christan", "Bob"], "rest": ["Stefan", "Niels", "Stef"], "absent": []}, {"iso": "2026-12-22", "label": "22 dec 2026", "short": "22 dec", "full": "dinsdag 22 december 2026", "week": 52, "lineup": ["Stefan", "Niels", "Christan", "Stef"], "rest": ["Dennis", "Denny", "Bob"], "absent": []}, {"iso": "2026-12-29", "label": "29 dec 2026", "short": "29 dec", "full": "dinsdag 29 december 2026", "week": 53, "lineup": ["Dennis", "Denny", "Stef", "Bob"], "rest": ["Stefan", "Niels", "Christan"], "absent": []}, {"iso": "2027-01-05", "label": "5 jan 2027", "short": "5 jan", "full": "dinsdag 5 januari 2027", "week": 1, "lineup": ["Stefan", "Denny", "Christan", "Bob"], "rest": ["Dennis", "Niels", "Stef"], "absent": []}, {"iso": "2027-01-12", "label": "12 jan 2027", "short": "12 jan", "full": "dinsdag 12 januari 2027", "week": 2, "lineup": ["Stefan", "Niels", "Stef", "Bob"], "rest": ["Denny", "Christan"], "absent": ["Dennis"]}, {"iso": "2027-01-19", "label": "19 jan 2027", "short": "19 jan", "full": "dinsdag 19 januari 2027", "week": 3, "lineup": ["Dennis", "Niels", "Denny", "Ralph"], "rest": ["Stefan", "Christan", "Stef", "Bob"], "absent": []}, {"iso": "2027-01-26", "label": "26 jan 2027", "short": "26 jan", "full": "dinsdag 26 januari 2027", "week": 4, "lineup": ["Dennis", "Niels", "Christan", "Stef"], "rest": ["Stefan", "Denny", "Bob"], "absent": []}, {"iso": "2027-02-02", "label": "2 feb 2027", "short": "2 feb", "full": "dinsdag 2 februari 2027", "week": 5, "lineup": ["Denny", "Christan", "Stef", "Bob"], "rest": ["Niels"], "absent": ["Stefan", "Dennis"]}, {"iso": "2027-02-09", "label": "9 feb 2027", "short": "9 feb", "full": "dinsdag 9 februari 2027", "week": 6, "lineup": ["Stefan", "Dennis", "Christan", "Ralph"], "rest": ["Niels", "Denny", "Stef", "Bob"], "absent": []}, {"iso": "2027-02-16", "label": "16 feb 2027", "short": "16 feb", "full": "dinsdag 16 februari 2027", "week": 7, "lineup": ["Stefan", "Dennis", "Denny", "Stef"], "rest": ["Niels", "Christan", "Bob"], "absent": []}, {"iso": "2027-02-23", "label": "23 feb 2027", "short": "23 feb", "full": "dinsdag 23 februari 2027", "week": 8, "lineup": ["Niels", "Denny", "Christan", "Bob"], "rest": ["Stef"], "absent": ["Stefan", "Dennis"]}, {"iso": "2027-03-02", "label": "2 mrt 2027", "short": "2 mrt", "full": "dinsdag 2 maart 2027", "week": 9, "lineup": ["Stefan", "Stef", "Bob", "Ralph"], "rest": ["Dennis", "Niels", "Denny", "Christan"], "absent": []}, {"iso": "2027-03-09", "label": "9 mrt 2027", "short": "9 mrt", "full": "dinsdag 9 maart 2027", "week": 10, "lineup": ["Stefan", "Dennis", "Niels", "Bob"], "rest": ["Denny", "Christan", "Stef"], "absent": []}, {"iso": "2027-03-16", "label": "16 mrt 2027", "short": "16 mrt", "full": "dinsdag 16 maart 2027", "week": 11, "lineup": ["Dennis", "Niels", "Denny", "Stef"], "rest": ["Stefan", "Christan", "Bob"], "absent": []}, {"iso": "2027-03-23", "label": "23 mrt 2027", "short": "23 mrt", "full": "dinsdag 23 maart 2027", "week": 12, "lineup": ["Niels", "Christan", "Stef", "Ralph"], "rest": ["Stefan", "Dennis", "Denny", "Bob"], "absent": []}], "bal": {"Stefan": {"g": 14, "r": 10, "a": 2}, "Dennis": {"g": 14, "r": 7, "a": 5}, "Niels": {"g": 15, "r": 10, "a": 1}, "Denny": {"g": 14, "r": 12, "a": 0}, "Christan": {"g": 14, "r": 12, "a": 0}, "Stef": {"g": 15, "r": 11, "a": 0}, "Bob": {"g": 14, "r": 11, "a": 1}, "Ralph": {"g": 4, "r": 0, "a": 0}}};
+var selected=null;
+
+function cellClass(p,r){
+  if(r.lineup.indexOf(p)>-1)return['play','✓'];
+  if(r.absent.indexOf(p)>-1)return['absent','✕✕'];
+  if(p===DATA.guest)return['none','–'];
+  return['rest','·'];
+}
+function render(){
+  var head=document.getElementById('head');if(!head)return;
+  head.innerHTML='<th class="datecol">Datum</th><th>Dag &amp; tijd</th>'+DATA.cols.map(function(p){return '<th>'+p+'</th>';}).join('');
+  var body=document.getElementById('body');body.innerHTML='';
+  DATA.rows.forEach(function(r){
+    var tr=document.createElement('tr');tr.dataset.gleanId='row-'+r.iso;
+    if(selected&&r.lineup.indexOf(selected)>-1)tr.className='highlight-play';
+    var cells=DATA.cols.map(function(p){var c=cellClass(p,r);return '<td class="cell '+c[0]+'">'+c[1]+'</td>';}).join('');
+    tr.innerHTML='<td class="datecol"><span class="wk">Week '+r.week+'</span>'+r.label+'</td>'+
+      '<td><span class="court-pill">Di</span><br><span style="font-size:.8rem;color:var(--artifact-muted)">'+DATA.time+'</span></td>'+cells;
+    body.appendChild(tr);
+  });
+  var foot=document.getElementById('foot');
+  foot.innerHTML='<td class="datecol">Totaal gespeeld</td><td>—</td>'+DATA.cols.map(function(p){return '<td>'+DATA.bal[p].g+'×</td>';}).join('');
+}
+function nextRow(){
+  var t=new Date();t.setHours(0,0,0,0);
+  for(var i=0;i<DATA.rows.length;i++){var d=new Date(DATA.rows[i].iso+'T00:00:00');if(d>=t)return{row:DATA.rows[i],days:Math.round((d-t)/86400000)};}
+  return null;
+}
+function buildNext(){
+  var el=document.getElementById('next');if(!el)return;
+  var nx=nextRow();
+  if(!nx){el.className='next done';el.innerHTML='<div class="eyebrow">Seizoen afgelopen</div><div class="when">Tot volgend seizoen! 🎾</div>';return;}
+  var r=nx.row;el.className='next';
+  var cd=nx.days===0?'<div class="n">Vandaag</div>':'<div class="n">'+nx.days+'</div><div class="u">'+(nx.days===1?'dag':'dagen')+'</div>';
+  var pls=r.lineup.map(function(n,i){return '<span class="pl"><span class="num">'+(i+1)+'</span>'+n+'</span>';}).join('');
+  var rest=r.rest.length?r.rest.join(', '):'—';
+  var av=r.absent.length?' · Verhinderd: '+r.absent.join(', '):'';
+  el.innerHTML='<div class="countdown">'+cd+'</div>'+
+    '<div class="eyebrow"><span class="live"></span>Aankomende ronde</div>'+
+    '<div class="when">'+r.full+'</div>'+
+    '<div class="meta"><span class="mpill">Dinsdag</span><span class="mpill">'+DATA.time+'</span><span class="mpill">Week '+r.week+'</span></div>'+
+    '<div class="who-label">Wie speelt er</div><div class="who">'+pls+'</div>'+
+    '<div class="rest-note">Rust deze week: '+rest+av+'</div>';
+}
+function buildSummary(){
+  var s=document.getElementById('summary');if(!s)return;s.innerHTML='';
+  DATA.cols.forEach(function(p){
+    var b=DATA.bal[p];var guest=(p===DATA.guest);
+    var d=document.createElement('div');d.className='pcard';d.dataset.gleanId='pcard-'+p;if(guest)d.style.borderStyle='dashed';
+    var split=guest?'<span>Gastspeler</span><span>vanaf januari</span>':'<span>Rust: <b>'+b.r+'</b></span><span>Verhinderd: <b>'+b.a+'</b></span>';
+    d.innerHTML='<h4>'+p+' <span class="big">'+b.g+'×</span></h4><div class="split">'+split+'</div>'+
+      '<button class="ics-btn" type="button" onclick="event.stopPropagation();downloadICS(\''+p+'\')">📅 Zet in agenda</button>';
+    if(!guest)d.onclick=function(){selected=(selected===p?null:p);render();buildFilter();window.scrollTo({top:0,behavior:'smooth'});};
+    s.appendChild(d);
+  });
+}
+function buildFilter(){
+  var f=document.getElementById('filter');if(!f)return;f.innerHTML='';
+  var all=document.createElement('div');all.className='chip all'+(selected?'':' active');all.textContent='Iedereen';
+  all.onclick=function(){selected=null;render();buildFilter();};f.appendChild(all);
+  DATA.cols.forEach(function(p){
+    var c=document.createElement('div');c.className='chip'+(p===selected?' active':'');c.textContent=p;c.dataset.gleanId='chip-'+p;
+    c.onclick=function(){selected=(selected===p?null:p);render();buildFilter();};f.appendChild(c);
+  });
+}
+function pad(n){return (n<10?'0':'')+n;}
+function icsFor(player){
+  var games=DATA.rows.filter(function(r){return r.lineup.indexOf(player)>-1;});
+  var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wintertennis//NL','CALSCALE:GREGORIAN'];
+  games.forEach(function(r){
+    var d=r.iso.replace(/-/g,'');
+    var mates=r.lineup.filter(function(x){return x!==player;}).join(', ');
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:'+r.iso+'-'+player+'@wintertennis');
+    lines.push('DTSTART:'+d+'T183000');
+    lines.push('DTEND:'+d+'T200000');
+    lines.push('SUMMARY:Wintertennis '+player);
+    lines.push('DESCRIPTION:Speelt met '+mates);
+    lines.push('LOCATION:Dinsdagavond 18:30-20:00');
+    lines.push('END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+function downloadICS(player){
+  var blob=new Blob([icsFor(player)],{type:'text/calendar'});
+  var url=URL.createObjectURL(blob);var a=document.createElement('a');
+  a.href=url;a.download='wintertennis_'+player+'.ics';document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+render();buildNext();buildSummary();buildFilter();
+</script>
+<script>
+window.GleanBridge && window.GleanBridge.postMessage({actionId:'export-pdf',type:'glean-add-menu',metadata:{label:'Export as PDF',icon:'export'}});
+window.GleanBridge && window.GleanBridge.onMessage('action',function(data){if(data.actionId==='export-pdf')window.print();});
+</script>
+</body>
+</html>
